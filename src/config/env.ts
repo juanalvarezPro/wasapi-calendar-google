@@ -1,0 +1,11 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+const DATABASE_URL = process.env.DATABASE_URL;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const GOOGLE_OAUTH_REDIRECT = process.env.GOOGLE_OAUTH_REDIRECT;
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
+const PORT = process.env.PORT || 3000;
+
+export { PORT, DATABASE_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_OAUTH_REDIRECT, ENCRYPTION_KEY };
