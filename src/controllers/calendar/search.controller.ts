@@ -1,7 +1,7 @@
-import { GoogleCalendarService } from "@/services/GoogleCalendarService";
+import { GoogleCalendarService } from "../../services/GoogleCalendarService";
 import { Request, Response } from "express";
-import { EventResource } from "@/resources/EventResource";
-import { DateHelper } from "@/helpers/dateHelper";
+import { EventResource } from "../../resources/EventResource";
+import { DateHelper } from "../../helpers/dateHelper";
 
 
 export const searchEvents = async (req: Request, res: Response) => {

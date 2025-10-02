@@ -1,8 +1,8 @@
-import { createOAuthClient } from "@/config/google";
+import { createOAuthClient } from "../../config/google";
 import { Request, Response } from "express";
 import { decode } from "jsonwebtoken";
 import { GoogleIdToken } from "./type";
-import { UserService } from "@/services/userGoogle.service";
+import { UserService } from "../../services/userGoogle.service";
 
 export const googleCallback = async (req: Request, res: Response) => {
     try {

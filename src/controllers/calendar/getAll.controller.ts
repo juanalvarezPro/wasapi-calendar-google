@@ -1,7 +1,7 @@
-import { DateHelper } from "@/helpers/dateHelper";
+import { DateHelper } from "../../helpers/dateHelper";
 import { Request, Response } from "express";
-import { GoogleCalendarService } from "@/services/GoogleCalendarService";
-import { EventResource } from "@/resources/EventResource";
+import { GoogleCalendarService } from "../../services/GoogleCalendarService";
+import { EventResource } from "../../resources/EventResource";
 
 export const getEventsForChatbot = async (req: Request, res: Response) => {
     const user = (req as any).user;
@@ -31,9 +31,11 @@ export const getEventsForChatbot = async (req: Request, res: Response) => {
           count: 0
         });
       }
-  
+
+      // Debug: Log de los datos que llegan de Google
+      console.log("📅 Datos de eventos de Google:", JSON.stringify(events.data.items[0], null, 2));
     
-      const chatbotEvents = EventResource.collection(events.data.items)
+      const chatbotEvents = events.data.items
         .map(event => EventResource.forChatbot(event))
         .filter(event => {
           // Aplicar filtro de tipo si es necesario

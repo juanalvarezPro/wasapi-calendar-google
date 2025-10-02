@@ -1,4 +1,4 @@
-import { createOAuthClient } from "@/config/google";
+import { createOAuthClient } from "../../config/google";
 import { Request, Response } from "express";
 
 export const googleAuth = (req: Request, res: Response) => {

@@ -1,7 +1,7 @@
-import { DateHelper } from "@/helpers/dateHelper";
+import { DateHelper } from "../../helpers/dateHelper";
 import { Request, Response } from "express";
-import { GoogleCalendarService } from "@/services/GoogleCalendarService";
-import { EventResource } from "@/resources/EventResource";
+import { EventResource } from "../../resources/EventResource";
+import { GoogleCalendarService } from "../../services/GoogleCalendarService";
 
 
 export const createEventFromChat = async (req: Request, res: Response) => {

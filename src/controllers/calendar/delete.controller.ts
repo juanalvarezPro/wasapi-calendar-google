@@ -1,4 +1,4 @@
-import { GoogleCalendarService } from "@/services/GoogleCalendarService";
+import { GoogleCalendarService } from "../../services/GoogleCalendarService";
 import { Request, Response } from "express";
     
 export const deleteEventFromChat = async (req: Request, res: Response) => {
