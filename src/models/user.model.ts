@@ -1,51 +1,40 @@
 import prisma from '../config/db';
-import { encrypt, decrypt } from '../utils/crypto';
-import { v4 as uuidv4 } from 'uuid';
 
+// Modelo puro: solo acceso a datos, sin lógica de negocio
 
-export async function createOrUpdateUser(googleProfile: any, tokens: any) {
-    const apiKey = uuidv4();
-    const encryptedAccess = tokens.access_token ? encrypt(tokens.access_token) : undefined;
-    const encryptedRefresh = tokens.refresh_token ? encrypt(tokens.refresh_token) : undefined;
-
-
-    const user = await prisma.user.upsert({
-        where: { googleId: googleProfile.id },
-        update: {
-            email: googleProfile.email,
-            name: googleProfile.name,
-            accessToken: encryptedAccess || undefined,
-            refreshToken: encryptedRefresh || undefined,
-            apiKey,
-        },
-        create: {
-            googleId: googleProfile.id,
-            email: googleProfile.email,
-            name: googleProfile.name,
-            accessToken: encryptedAccess || undefined,
-            refreshToken: encryptedRefresh || undefined,
-            apiKey,
-        }
+export async function createUser(userData: any) {
+    return await prisma.user.create({
+        data: userData
     });
-
-
-    return user;
 }
 
+export async function updateUser(where: any, data: any) {
+    return await prisma.user.update({
+        where,
+        data
+    });
+}
+
+export async function upsertUser(where: any, updateData: any, createData: any) {
+    return await prisma.user.upsert({
+        where,
+        update: updateData,
+        create: createData
+    });
+}
 
 export async function findUserByApiKey(apiKey: string) {
-    return prisma.user.findUnique({ where: { apiKey } });
+    return await prisma.user.findUnique({ where: { apiKey } });
 }
 
-
-export async function getDecryptedAccessToken(userId: string) {
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user?.accessToken) return null;
-    return decrypt(user.accessToken);
+export async function findUserById(id: string) {
+    return await prisma.user.findUnique({ where: { id } });
 }
 
-export async function getDecryptedRefreshToken(userId: string) {
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user?.refreshToken) return null;
-    return decrypt(user.refreshToken);
+export async function findUserByGoogleId(googleId: string) {
+    return await prisma.user.findUnique({ where: { googleId } });
+}
+
+export async function findUserByEmail(email: string) {
+    return await prisma.user.findUnique({ where: { email } });
 }
