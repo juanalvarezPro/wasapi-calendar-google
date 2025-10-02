@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.routes";
-import chatbotRoutes from "./routes/chatbot.routes";
+import chatbotRoutes from "./routes/calendar.routes";
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(express.json());
 
 // Rutas
 app.use("/api/auth", authRoutes);
-app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/calendar", chatbotRoutes);
 
 // Ruta de salud
 app.get("/health", (req, res) => {
