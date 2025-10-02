@@ -13,3 +13,28 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  googleId     String   @unique
+  accessToken  String?
+  refreshToken String? // cifrar en DB o guardar en Secrets Manager
+  apiKey       String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  start       DateTime
+  end         DateTime
+  googleId    String? // id del evento en Google
+  userId      String
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
