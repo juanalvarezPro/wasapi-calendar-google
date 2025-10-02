@@ -1,19 +1,22 @@
+// middlewares/auth.middleware.ts
 import { Request, Response, NextFunction } from "express";
 import prisma from "../config/db";
 
-export const chatbotAuth = async (req: Request, res: Response, next: NextFunction) => {
+export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // 1. Extraer API key
     const apiKey = req.headers.authorization?.replace("Bearer ", "");
     
     if (!apiKey) {
+      console.log(`Request sin API Key desde ${req.ip} - ${req.method} ${req.path}`);
       return res.status(401).json({
         success: false,
-        message: "API Key requerida para chatbot",
+        message: "API Key requerida",
         code: "MISSING_API_KEY"
       });
     }
 
-    // Buscar usuario por API key
+    // 2. Buscar usuario
     const user = await prisma.user.findUnique({
       where: { apiKey },
       select: {
@@ -27,14 +30,15 @@ export const chatbotAuth = async (req: Request, res: Response, next: NextFunctio
     });
 
     if (!user) {
+      console.log(`API Key inválida: ${apiKey.substring(0, 8)}... desde ${req.ip} - ${req.method} ${req.path}`);
       return res.status(401).json({
         success: false,
-        message: "API Key inválida para chatbot",
+        message: "API Key inválida",
         code: "INVALID_API_KEY"
       });
     }
 
-    // Buscar que tenga access token en google
+    // 3. Validar que tenga access token (requerido para todas las rutas)
     if (!user.accessToken) {
       console.log(`❌ Usuario ${user.email} no tiene access token`);
       return res.status(401).json({
@@ -44,24 +48,18 @@ export const chatbotAuth = async (req: Request, res: Response, next: NextFunctio
       });
     }
 
-    // Advertir si no hay refresh token (pero permitir continuar)
-    if (!user.refreshToken) {
-      console.log(`⚠️ Usuario ${user.email} no tiene refresh token - puede tener problemas de renovación`);
-      // Agregar información sobre re-autenticación en el header de respuesta
-      res.set('X-Refresh-Token-Status', 'missing');
-      res.set('X-Reauth-Endpoint', '/api/auth/reauth');
-    }
+    // 4. Log de acceso exitoso
+    console.log(`Acceso autorizado: ${user.email} desde ${req.ip} - ${req.method} ${req.path}`);
 
-    // Agregar usuario al request
+    // 5. Guardar usuario en request
     (req as any).user = user;
-    console.log(`Chatbot request from: ${user.email}`);
     next();
 
   } catch (error) {
-    console.error("❌ Error en chatbotAuth:", error);
+    console.error("❌ Error en auth:", error);
     res.status(500).json({
       success: false,
-      message: "Error de autenticación del chatbot",
+      message: "Error de autenticación",
       code: "AUTH_ERROR"
     });
   }
