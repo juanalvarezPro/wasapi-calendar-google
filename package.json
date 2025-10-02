@@ -1,8 +1,16 @@
 {
   "name": "wasapi-calendar-google",
-  "module": "index.ts",
-  "type": "module",
+  "main": "src/server.ts",
+  "type": "commonjs",
   "private": true,
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "start": "ts-node src/server.ts",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
+  },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/bun": "latest",
@@ -20,6 +28,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
+    "@types/cors": "^2.8.19",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -29,6 +38,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
     "nodemon": "^3.1.10",
-    "prisma": "^6.16.3"
+    "prisma": "^6.16.3",
+    "uuid": "^13.0.0"
   }
 }
