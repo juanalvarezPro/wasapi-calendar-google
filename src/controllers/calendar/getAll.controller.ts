@@ -33,7 +33,7 @@ export const getEventsForChatbot = async (req: Request, res: Response) => {
       }
 
       // Debug: Log de los datos que llegan de Google
-      console.log("📅 Datos de eventos de Google:", JSON.stringify(events.data.items[0], null, 2));
+      console.log("Datos de eventos de Google:", JSON.stringify(events.data.items[0], null, 2));
     
       const chatbotEvents = events.data.items
         .map(event => EventResource.forChatbot(event))
