@@ -110,4 +110,12 @@ export class GoogleCalendarService {
       eventId
     });
   }
+
+  /**
+   * Obtener calendarios
+   */
+  static async getCalendars(user: any) {
+    const calendar = await this.createClient(user);
+    return await calendar.calendarList.list();
+  }
 }

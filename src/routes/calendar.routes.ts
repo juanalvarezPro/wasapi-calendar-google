@@ -3,22 +3,30 @@ import {
   getEventsForChatbot, 
   createEventFromChat, 
   searchEvents,
-  deleteEventFromChat
+  deleteEventFromChat,
+  calendarList,
+  getEventsByCalendar
 } from "../controllers/calendar"; 
 import { auth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-// GET /api/chatbot/events - Obtener eventos para chatbot
+// GET /api/calendar/ - Obtener lista de calendarios
+router.get("/", auth, calendarList);
+
+// GET /api/calendar/events - Obtener eventos para chatbot
 router.get("/events", auth, getEventsForChatbot);
 
-// POST /api/chatbot/create - Crear evento desde chatbot
-router.post("/create", auth, createEventFromChat);
-
-// GET /api/chatbot/search/:q - Buscar eventos por texto
+// GET /api/calendar/search - Buscar eventos por texto
 router.get("/search", auth, searchEvents);
 
-// DELETE /api/chatbot/delete/:eventId - Eliminar evento desde chatbot
+// GET /api/calendar/:calendarId/events - Obtener eventos de un calendario específico
+router.get("/:calendarId/events", auth, getEventsByCalendar);
+
+// POST /api/calendar/create - Crear evento desde chatbot
+router.post("/create", auth, createEventFromChat);
+
+// DELETE /api/calendar/delete/:eventId - Eliminar evento desde chatbot
 router.delete("/delete/:eventId", auth, deleteEventFromChat);
 
 export default router;
